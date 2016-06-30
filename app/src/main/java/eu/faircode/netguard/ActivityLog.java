@@ -56,17 +56,14 @@ import java.net.UnknownHostException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class ActivityLog extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class ActivityLog extends ActivityBase implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "NetGuard.Log";
 
     private boolean running = false;
-    private ListView lvLog;
     private AdapterLog adapter;
     private MenuItem menuSearch = null;
 
     private boolean live;
-    private boolean resolve;
-    private boolean organization;
     private InetAddress vpn4 = null;
     private InetAddress vpn6 = null;
 
@@ -95,16 +92,16 @@ public class ActivityLog extends AppCompatActivity implements SharedPreferences.
         View actionView = getLayoutInflater().inflate(R.layout.actionlog, null, false);
         SwitchCompat swEnabled = (SwitchCompat) actionView.findViewById(R.id.swEnabled);
 
-        getSupportActionBar().setDisplayShowCustomEnabled(true);
-        getSupportActionBar().setCustomView(actionView);
+        mActionBar.setDisplayShowCustomEnabled(true);
+        mActionBar.setCustomView(actionView);
 
-        getSupportActionBar().setTitle(R.string.menu_log);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mActionBar.setTitle(R.string.menu_log);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
         // Get settings
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        resolve = prefs.getBoolean("resolve", false);
-        organization = prefs.getBoolean("organization", false);
+        boolean resolve = prefs.getBoolean("resolve", false);
+        boolean organization = prefs.getBoolean("organization", false);
         boolean log = prefs.getBoolean("log", false);
 
         // Show disabled message
@@ -122,7 +119,7 @@ public class ActivityLog extends AppCompatActivity implements SharedPreferences.
         // Listen for preference changes
         prefs.registerOnSharedPreferenceChangeListener(this);
 
-        lvLog = (ListView) findViewById(R.id.lvLog);
+        ListView lvLog = (ListView) findViewById(R.id.lvLog);
 
         boolean udp = prefs.getBoolean("proto_udp", true);
         boolean tcp = prefs.getBoolean("proto_tcp", true);

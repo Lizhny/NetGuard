@@ -25,7 +25,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.net.InetAddress;
@@ -46,9 +45,9 @@ public class ActivityForwardApproval extends Activity {
 
         final int protocol = getIntent().getIntExtra("protocol", 0);
         final int dport = getIntent().getIntExtra("dport", 0);
-        String addr = getIntent().getStringExtra("raddr");
         final int rport = getIntent().getIntExtra("rport", 0);
         final int ruid = getIntent().getIntExtra("ruid", 0);
+        String addr = getIntent().getStringExtra("raddr");
         final String raddr = (addr == null ? "127.0.0.1" : addr);
 
         try {
@@ -76,38 +75,38 @@ public class ActivityForwardApproval extends Activity {
         else
             tvForward.setText(getString(R.string.msg_stop_forward, pname, dport));
 
-        Button btnOk = (Button) findViewById(R.id.btnOk);
-        Button btnCancel = (Button) findViewById(R.id.btnCancel);
+//        Button btnOk = (Button) findViewById(R.id.btnOk);
+//        Button btnCancel = (Button) findViewById(R.id.btnCancel);
 
-        btnOk.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnOk).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                DatabaseHelper dh = DatabaseHelper.getInstance(ActivityForwardApproval.this);
                 if (ACTION_START_PORT_FORWARD.equals(getIntent().getAction())) {
-/*
-am start -a eu.faircode.netguard.START_PORT_FORWARD \
--n eu.faircode.netguard/eu.faircode.netguard.ActivityForwardApproval \
---ei protocol 17 \
---ei dport 53 \
---es raddr 8.8.4.4 \
---ei rport 53 \
---ei ruid 9999 \
---user 0
-*/
+                    /*
+                    am start -a eu.faircode.netguard.START_PORT_FORWARD \
+                    -n eu.faircode.netguard/eu.faircode.netguard.ActivityForwardApproval \
+                    --ei protocol 17 \
+                    --ei dport 53 \
+                    --es raddr 8.8.4.4 \
+                    --ei rport 53 \
+                    --ei ruid 9999 \
+                    --user 0
+                    */
                     Log.i(TAG, "Start forwarding protocol " + protocol + " port " + dport + " to " + raddr + "/" + rport + " uid " + ruid);
-                    DatabaseHelper dh = DatabaseHelper.getInstance(ActivityForwardApproval.this);
                     dh.deleteForward(protocol, dport);
                     dh.addForward(protocol, dport, raddr, rport, ruid);
 
                 } else if (ACTION_STOP_PORT_FORWARD.equals(getIntent().getAction())) {
-/*
-am start -a eu.faircode.netguard.STOP_PORT_FORWARD \
--n eu.faircode.netguard/eu.faircode.netguard.ActivityForwardApproval \
---ei protocol 17 \
---ei dport 53 \
---user 0
-*/
+                    /*
+                    am start -a eu.faircode.netguard.STOP_PORT_FORWARD \
+                    -n eu.faircode.netguard/eu.faircode.netguard.ActivityForwardApproval \
+                    --ei protocol 17 \
+                    --ei dport 53 \
+                    --user 0
+                    */
                     Log.i(TAG, "Stop forwarding protocol " + protocol + " port " + dport);
-                    DatabaseHelper.getInstance(ActivityForwardApproval.this).deleteForward(protocol, dport);
+                    dh.deleteForward(protocol, dport);
                 }
 
                 ServiceSinkhole.reload("forwarding", ActivityForwardApproval.this);
@@ -116,7 +115,7 @@ am start -a eu.faircode.netguard.STOP_PORT_FORWARD \
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();

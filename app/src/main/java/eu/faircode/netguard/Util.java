@@ -65,7 +65,6 @@ import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.InterfaceAddress;
 import java.net.NetworkInterface;
-import java.net.SocketException;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -282,7 +281,7 @@ public class Util {
             return true;
     }
 
-    public static List<String> getDefaultDNS(Context context) {
+    public static List<String> getDefaultDNS() {
         String dns1 = jni_getprop("net.dns1");
         String dns2 = jni_getprop("net.dns2");
         List<String> listDns = new ArrayList<>();
@@ -429,18 +428,26 @@ public class Util {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean dark = prefs.getBoolean("dark_theme", false);
         String theme = prefs.getString("theme", "teal");
-        if (theme.equals("teal"))
-            context.setTheme(dark ? R.style.AppThemeTealDark : R.style.AppThemeTeal);
-        else if (theme.equals("blue"))
-            context.setTheme(dark ? R.style.AppThemeBlueDark : R.style.AppThemeBlue);
-        else if (theme.equals("purple"))
-            context.setTheme(dark ? R.style.AppThemePurpleDark : R.style.AppThemePurple);
-        else if (theme.equals("amber"))
-            context.setTheme(dark ? R.style.AppThemeAmberDark : R.style.AppThemeAmber);
-        else if (theme.equals("orange"))
-            context.setTheme(dark ? R.style.AppThemeOrangeDark : R.style.AppThemeOrange);
-        else if (theme.equals("green"))
-            context.setTheme(dark ? R.style.AppThemeGreenDark : R.style.AppThemeGreen);
+        switch (theme) {
+            case "teal":
+                context.setTheme(dark ? R.style.AppThemeTealDark : R.style.AppThemeTeal);
+                break;
+            case "blue":
+                context.setTheme(dark ? R.style.AppThemeBlueDark : R.style.AppThemeBlue);
+                break;
+            case "purple":
+                context.setTheme(dark ? R.style.AppThemePurpleDark : R.style.AppThemePurple);
+                break;
+            case "amber":
+                context.setTheme(dark ? R.style.AppThemeAmberDark : R.style.AppThemeAmber);
+                break;
+            case "orange":
+                context.setTheme(dark ? R.style.AppThemeOrangeDark : R.style.AppThemeOrange);
+                break;
+            case "green":
+                context.setTheme(dark ? R.style.AppThemeGreenDark : R.style.AppThemeGreen);
+                break;
+        }
     }
 
     public static int dips2pixels(int dips, Context context) {
@@ -510,7 +517,7 @@ public class Util {
                 .create().show();
     }
 
-    private static Map<String, String> mapIPOrganization = new HashMap<>();
+    private static final Map<String, String> mapIPOrganization = new HashMap<>();
 
     public static String getOrganization(String ip) throws Exception {
         synchronized (mapIPOrganization) {
@@ -929,7 +936,7 @@ public class Util {
     private static StringBuilder getLogcat() {
         StringBuilder builder = new StringBuilder();
         Process process1 = null;
-        Process process2 = null;
+//        Process process2 = null;
         BufferedReader br = null;
         try {
             String[] command1 = new String[]{"logcat", "-d", "-v", "threadtime"};
@@ -951,12 +958,12 @@ public class Util {
                     br.close();
                 } catch (IOException ignored) {
                 }
-            if (process2 != null)
-                try {
-                    process2.destroy();
-                } catch (Throwable ex) {
-                    Log.w(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
-                }
+//            if (process2 != null)
+//                try {
+//                    process2.destroy();
+//                } catch (Throwable ex) {
+//                    Log.w(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
+//                }
             if (process1 != null)
                 try {
                     process1.destroy();

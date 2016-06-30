@@ -42,8 +42,8 @@ import android.widget.Toast;
 import java.net.InetAddress;
 import java.util.List;
 
-public class ActivityForwarding extends AppCompatActivity {
-    private static final String TAG = "NetGuard.forwarding";
+public class ActivityForwarding extends ActivityBase {
+//    private static final String TAG = "NetGuard.forwarding";
 
     private boolean running;
     private ListView lvForwarding;
@@ -70,8 +70,8 @@ public class ActivityForwarding extends AppCompatActivity {
         setContentView(R.layout.forwarding);
         running = true;
 
-        getSupportActionBar().setTitle(R.string.setting_forwarding);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mActionBar.setTitle(R.string.setting_forwarding);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
 
         lvForwarding = (ListView) findViewById(R.id.lvForwarding);

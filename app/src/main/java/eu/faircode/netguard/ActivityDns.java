@@ -20,11 +20,10 @@ package eu.faircode.netguard;
 */
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 
-public class ActivityDns extends AppCompatActivity {
-    private static final String TAG = "NetGuard.DNS";
+public class ActivityDns extends ActivityBase {
+//    private static final String TAG = "NetGuard.DNS";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,8 +31,8 @@ public class ActivityDns extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.resolving);
 
-        getSupportActionBar().setTitle(R.string.setting_show_resolved);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mActionBar.setTitle(R.string.setting_show_resolved);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
         ListView lvDns = (ListView) findViewById(R.id.lvDns);
         lvDns.setAdapter(new AdapterDns(this, DatabaseHelper.getInstance(this).getDns()));
