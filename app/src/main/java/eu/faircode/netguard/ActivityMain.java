@@ -66,7 +66,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-public class ActivityMain extends AppCompatActivity implements SharedPreferences.OnSharedPreferenceChangeListener {
+public class ActivityMain extends ActivityBase implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String TAG = "NetGuard.Main";
 
     private boolean running = false;
@@ -150,7 +150,7 @@ public class ActivityMain extends AppCompatActivity implements SharedPreferences
         });
 
         // Title
-        getSupportActionBar().setTitle(null);
+        mActionBar.setTitle(null);
 
         // Netguard is busy
         ivQueue.setOnLongClickListener(new View.OnLongClickListener() {
@@ -160,7 +160,7 @@ public class ActivityMain extends AppCompatActivity implements SharedPreferences
                 actionView.getLocationOnScreen(location);
                 Toast toast = Toast.makeText(ActivityMain.this, R.string.msg_queue, Toast.LENGTH_LONG);
                 toast.setGravity(
-                        Gravity.TOP | Gravity.LEFT,
+                        Gravity.TOP | Gravity.START,
                         location[0] + ivQueue.getLeft(),
                         Math.round(location[1] + ivQueue.getBottom() - toast.getView().getPaddingTop()));
                 toast.show();

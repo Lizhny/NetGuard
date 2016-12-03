@@ -24,7 +24,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
-import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.util.Linkify;
@@ -40,7 +39,7 @@ import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class ActivityPro extends AppCompatActivity {
+public class ActivityPro extends ActivityBase {
     private static final String TAG = "NetGuard.Pro";
 
     private IAB iab;
@@ -62,8 +61,8 @@ public class ActivityPro extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pro);
 
-        getSupportActionBar().setTitle(R.string.title_pro);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mActionBar.setTitle(R.string.title_pro);
+        mActionBar.setDisplayHomeAsUpEnabled(true);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
@@ -93,31 +92,35 @@ public class ActivityPro extends AppCompatActivity {
 
         // Challenge
         TextView tvChallenge = (TextView) findViewById(R.id.tvChallenge);
-        tvChallenge.setText(Build.SERIAL);
+        if (tvChallenge != null) {
+            tvChallenge.setText(Build.SERIAL);
+        }
 
         // Response
         try {
             final String response = Util.md5(Build.SERIAL, "NetGuard");
             EditText etResponse = (EditText) findViewById(R.id.etResponse);
-            etResponse.addTextChangedListener(new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                    // Do nothing
-                }
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    // Do nothing
-                }
-
-                @Override
-                public void afterTextChanged(Editable editable) {
-                    if (response.equals(editable.toString().toUpperCase())) {
-                        IAB.setBought(SKU_DONATION, ActivityPro.this);
-                        updateState();
+            if (etResponse != null) {
+                etResponse.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                        // Do nothing
                     }
-                }
-            });
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                        // Do nothing
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        if (response.equals(editable.toString().toUpperCase())) {
+                            IAB.setBought(SKU_DONATION, ActivityPro.this);
+                            updateState();
+                        }
+                    }
+                });
+            }
         } catch (Throwable ex) {
             Log.e(TAG, ex.toString() + "\n" + Log.getStackTraceString(ex));
         }

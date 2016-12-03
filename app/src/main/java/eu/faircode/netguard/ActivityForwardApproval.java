@@ -60,6 +60,7 @@ public class ActivityForwardApproval extends Activity {
         }
 
         String pname;
+        //判断协议类型
         if (protocol == 6)
             pname = getString(R.string.menu_protocol_tcp);
         else if (protocol == 17)
@@ -69,15 +70,19 @@ public class ActivityForwardApproval extends Activity {
 
         TextView tvForward = (TextView) findViewById(R.id.tvForward);
         if (ACTION_START_PORT_FORWARD.equals(getIntent().getAction()))
-            tvForward.setText(getString(R.string.msg_start_forward,
-                    pname, dport, raddr, rport,
+            tvForward.setText(getString(R.string.msg_start_forward, pname, dport, raddr, rport,
                     TextUtils.join(", ", Util.getApplicationNames(ruid, this))));
         else
             tvForward.setText(getString(R.string.msg_stop_forward, pname, dport));
 
-//        Button btnOk = (Button) findViewById(R.id.btnOk);
-//        Button btnCancel = (Button) findViewById(R.id.btnCancel);
-
+        //对话框取消按钮
+        findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
+        //下一步
         findViewById(R.id.btnOk).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -115,11 +120,5 @@ public class ActivityForwardApproval extends Activity {
             }
         });
 
-        findViewById(R.id.btnCancel).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                finish();
-            }
-        });
     }
 }

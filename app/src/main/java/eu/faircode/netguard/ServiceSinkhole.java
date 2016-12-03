@@ -923,7 +923,7 @@ public class ServiceSinkhole extends VpnService implements SharedPreferences.OnS
         List<InetAddress> listDns = new ArrayList<>();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        List<String> sysDns = Util.getDefaultDNS(context);
+        List<String> sysDns = Util.getDefaultDNS();
         String vpnDns = prefs.getString("dns", null);
         Log.i(TAG, "DNS system=" + TextUtils.join(",", sysDns) + " VPN=" + vpnDns);
 

@@ -35,7 +35,9 @@ public class ActivityDns extends ActivityBase {
         mActionBar.setDisplayHomeAsUpEnabled(true);
 
         ListView lvDns = (ListView) findViewById(R.id.lvDns);
-        lvDns.setAdapter(new AdapterDns(this, DatabaseHelper.getInstance(this).getDns()));
+        if (lvDns != null) {
+            lvDns.setAdapter(new AdapterDns(this, DatabaseHelper.getInstance(this).getDns()));
+        }
     }
 
     @Override
